@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Commit Data</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+          <nav>
+            <ul>
+                <li><a href="{{ url_for('new_home') }}">Hjem </a></li>
+                <li><a href="{{ url_for('index') }}">Søknadsskjema</a></li>
+                <li><a href="{{ url_for('applications') }}">Søknader</a></li>
+            </ul>
+        </nav>
+        <h1>Data fra applications.xlsx</h1>
+        <table>
+            <thead>
+                <tr>
+                    {% for column in data[0].keys() %}
+                        <th>{{ column }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in data %}
+                    <tr>
+                        {% for value in row.values() %}
+                            <td>{{ value }}</td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <footer>
+        <p>© 2024 Kristiansand kommune</p>
+    </footer>
+</body>
+</html>

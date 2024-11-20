@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alle søknader</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 90%;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        nav ul li {
+            display: inline;
+            margin-right: 15px;
+        }
+        nav ul li a {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        nav ul li a:hover {
+            background-color: #0056b3;
+            color: #fff;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #0056b3;
+            color: #fff;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #0056b3;
+            color: #fff;
+        }
+        .delete-button {
+            display: block;
+            width: 200px;
+            margin: 20px auto;
+            padding: 10px;
+            background-color: transparent;
+            color: #6a0dad; /* Typisk lilla farge */
+            text-align: center;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            text-decoration: underline;
+        }
+        .delete-button:hover {
+            background-color: #f1f1f1;
+        }
+    </style>
+    <script>
+        function confirmDelete() {
+            return confirm('Er du sikker på at du vil slette alle søknadene?');
+        }
+
+        window.onload = function() {
+            const message = "{{ message }}";
+            if (message) {
+                alert(message);
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('new_home') }}">Hjem </a></li>
+                <li><a href="{{ url_for('barnehager') }}">Barnehager </a></li>
+                <li><a href="{{ url_for('commit') }}">Commit</a></li>
+                <li><a href="{{ url_for('statistics') }}">Statistikk</a></li>
+                <li><a href="{{ url_for('index') }}">Søknadsskjema</a></li>
+            </ul>
+        </nav>
+        <h1>Alle søknader</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Navn på foresatt 1</th>
+                    <th>Navn på foresatt 2</th>
+                    <th>Personnummer barn 1</th>
+                    <th>Personnummer barn 2</th>
+                    <th>Status</th>
+                    <th>Fortrinnsrett</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for application in applications %}
+                <tr>
+                    <td>{{ application.id }}</td>
+                    <td>{{ application.parent1_name }}</td>
+                    <td>{{ application.parent2_name }}</td>
+                    <td>{{ application.child1_id }}</td>
+                    <td>{{ application.child2_id }}</td>
+                    <td>{{ application.status }}</td>
+                    <td>{{ 'Ja' if application.priority else 'Nei' }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <form action="{{ url_for('delete_all_applications') }}" method="post" onsubmit="return confirmDelete();">
+            <button type="submit" class="delete-button">Slett alle søknader</button>
+        </form>
+        <div class="footer">
+            © 2024 Kristiansand kommune
+        </div>
+    </div>
+</body>
+</html>

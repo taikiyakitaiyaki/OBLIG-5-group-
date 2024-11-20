@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barnehageplass søknad</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        .inline {
+            display: flex;
+            align-items: left;
+            margin-bottom: 20px;
+            white-space: nowrap; /* Prevent line breaks */
+        }
+        .inline label {
+            margin-right: 5px;
+        }
+        .checkbox-group {
+            display: flex;
+            align-items: right;
+            margin-bottom: 5px;
+        }
+        .checkbox-group label {
+            margin-right: 200px; /* Increased margin to move checkboxes to the right */
+        }
+        fieldset {
+            max-width: 350px; /* Adjust the width as needed */
+            padding: 10px;
+        }
+        .bordered {
+            border: 1px solid #ccc; /* Match the color with other frames */
+            padding: 10px; /* Reduced padding */
+            margin-bottom: 20px;
+            max-width: 300px; /* Set the width to 300px */
+        }
+    </style>
+    <script>
+        function validateForm() {
+            var parent2Name = document.getElementById('parent2_name').value;
+            var parent2Address = document.getElementById('parent2_address').value;
+            var parent2Phone = document.getElementById('parent2_phone').value;
+            var parent2Id = document.getElementById('parent2_id').value;
+
+            if ((parent2Name || parent2Address || parent2Phone || parent2Id) && 
+                (!parent2Name || !parent2Address || !parent2Phone || !parent2Id)) {
+                alert('Alle feltene for forelder 2 må fylles ut hvis noen av dem er fylt ut.');
+                return false;
+            }
+
+            var startDate = new Date(document.getElementById('start_date').value);
+            var today = new Date();
+            today.setHours(0, 0, 0, 0); // Set time to midnight to compare only dates
+            var tomorrow = new Date(today);
+            tomorrow.setDate(today.getDate() + 1);
+
+            if (startDate < tomorrow) {
+                alert('Startdato kan ikke være i dag eller tidligere.');
+                return false;
+            }
+
+            return true;
+        }
+
+        function checkParent2Fields() {
+            var parent2Fields = ['parent2_name', 'parent2_address', 'parent2_phone', 'parent2_id'];
+            var anyFilled = parent2Fields.some(function(id) {
+                return document.getElementById(id).value;
+            });
+
+            parent2Fields.forEach(function(id) {
+                document.getElementById(id).required = anyFilled;
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('new_home') }}">Hjem </a></li>
+                <li><a href="{{ url_for('barnehager') }}" class="barnehager">Barnehager</a></li>
+                <li><a href="{{ url_for('statistics') }}" class="statistikk">Statistikk</a></li> <!-- Nytt element -->
+                <li><a href="{{ url_for('applications') }}" class="soknader">Søknader</a></li>
+            </ul>
+        </nav>
+        <h1>Søk om barnehageplass i Kristiansand kommune</h1>
+        <form method="POST" action="{{ url_for('index') }}" onsubmit="return validateForm()">
+            {{ form.hidden_tag() }}
+            
+            <label for="email">E-post:</label>
+            {{ form.email(class="field", size=32, required=True) }}
+            
+            <label for="parent1_name">Navn på foresatt 1:</label>
+            {{ form.parent1_name(class="field", size=32, required=True) }}
+            
+            <label for="parent2_name">Navn på foresatt 2:</label>
+            {{ form.parent2_name(class="field", size=32, id="parent2_name", oninput="checkParent2Fields()") }}
+            
+            <label for="parent1_address">Adresse på foresatt 1:</label>
+            {{ form.parent1_address(class="field", size=32, required=True) }}
+            
+            <label for="parent2_address">Adresse på foresatt 2:</label>
+            {{ form.parent2_address(class="field", size=32, id="parent2_address", oninput="checkParent2Fields()") }}
+            
+            <label for="parent1_phone">Telefonnummer på foresatt 1:</label>
+            {{ form.parent1_phone(class="field", size=32, required=True) }}
+            
+            <label for="parent2_phone">Telefonnummer på foresatt 2:</label>
+            {{ form.parent2_phone(class="field", size=32, id="parent2_phone", oninput="checkParent2Fields()") }}
+            
+            <label for="parent1_id">Personnummer på foresatt 1:</label>
+            {{ form.parent1_id(class="field", size=32, required=True) }}
+            
+            <label for="parent2_id">Personnummer på foresatt 2:</label>
+            {{ form.parent2_id(class="field", size=32, id="parent2_id", oninput="checkParent2Fields()") }}
+
+            <label for="child1_id">Personnummer barn 1:</label>
+            {{ form.child1_id(class="field", size=32, required=True) }}
+            <label for="child1_age">Alder barn 1:</label>
+            {{ form.child1_age(class="field", required=True) }}
+
+            <label for="child2_id">Personnummer barn 2:</label>
+            {{ form.child2_id(class="field", size=32) }}
+            <label for="child2_age">Alder barn 2:</label>
+            {{ form.child2_age(class="field") }}
+            
+            <fieldset>
+                <legend><strong>Fortrinnsrett</strong></legend>
+                <div class="checkbox-group">
+                    <label for="barnevern">Barnevern:</label>
+                    <input type="checkbox" id="barnevern" name="priority" value="barnevern">
+                </div>
+                <div class="checkbox-group">
+                    <label for="familie_sykdom">Sykdom i familien:</label>
+                    <input type="checkbox" id="familie_sykdom" name="priority" value="familie_sykdom">
+                </div>
+                <div class="checkbox-group">
+                    <label for="barn_sykdom">Sykdom på barnet:</label>
+                    <input type="checkbox" id="barn_sykdom" name="priority" value="barn_sykdom">
+                </div>
+                <div class="checkbox-group">
+                    <label for="annet">Annet:</label>
+                    <input type="text" id="annet" name="priority_other" class="field priority-other">
+                </div>
+            </fieldset>
+            
+            <label for="kindergarten_choice_1">1. Prioritert Barnehage:</label>
+            {{ form.kindergarten_choice_1(class="field", required=True) }}
+            
+            <label for="kindergarten_choice_2">2. Prioritert Barnehage:</label>
+            {{ form.kindergarten_choice_2(class="field", required=True) }}
+            
+            <label for="kindergarten_choice_3">3. Prioritert Barnehage:</label>
+            {{ form.kindergarten_choice_3(class="field", required=True) }}
+            
+            <a href="{{ url_for('barnehager') }}" style="display: block; margin-top: 0;">Se oversikt over barnehager</a>
+            
+            <label for="start_date" style="margin-top: 20px;">Tidspunkt for oppstart:</label>
+            {{ form.start_date(id="start_date", class="field start-date", required=True) }}
+            
+            <div class="bordered">
+                <div class="inline">
+                    <label for="siblings">Har søsken i barnehagen:</label>
+                    {{ form.siblings(class="field") }}
+                </div>
+            </div>
+            
+            <label for="income">Brutto inntekt husholdning:</label>
+            {{ form.income(class="field income", required=True) }}
+            
+            <button type="submit" class="send-button">Send søknad</button>
+        </form>
+    </div>
+    <footer>
+        <p>© 2024 Kristiansand kommune</p>
+    </footer>
+</body>
+</html>

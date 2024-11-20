@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ny Hovedside</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="{{ url_for('barnehager') }}">Barnehager</a></li>
+            <li><a href="{{ url_for('applications') }}">Søknader</a></li>
+            <li><a href="{{ url_for('index') }}">Søknadskjema</a></li>
+            <li><a href="{{ url_for('statistics') }}">Statistikk</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <h1>Velkommen til barnehagesøknad i Kristiansand</h1>
+        <p>Ønsker du barnehageplass for barnet ditt? Her kan du enkelt søke om plass i en av våre barnehager.
+Kristiansand kommune tilbyr et bredt utvalg av barnehager med fokus på trygghet, lek og læring.</p>
+
+<img src="https://www.cadence-education.com/wp-content/uploads/2022/12/Screen-Shot-2022-12-21-at-1.31.08-PM-845x321.png" alt="Description of the image" width="400">
+
+        <section>
+            <h2>Hvordan fungerer søknadsprosessen?</h2>
+            <ul>
+                <li>Fyll ut søknadsskjemaet ved å klikke på "Søknadsskjema" på toppen av siden.</li>
+                <li>Velg dine prioriterte barnehager fra vår liste.</li>
+                <li>Send inn søknaden og motta et svar umiddelbart.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Tilgjengelig på nettsiden</h2>
+            <div>
+                <h3>Utforsk våre barnehager</h3>
+                <p>Ved å klikke på "Barnehager" øverst på nettsiden, får du tilgang til en fullstendig oversikt over alle barnehager i Kristiansand, inkludert totalt antall plasser og antall ledige plasser i hver barnehage. Dette hjelper deg å velge en barnehage som passer best for ditt barn.</p>
+            </div>
+            <div>
+                <h3>Søknader</h3>
+                <p>Her finner du en oversikt over alle søknader som har blitt sendt inn. Du kan se status og resultatet på disse søknadene, og holde deg oppdatert på prosessen.</p>
+            </div>
+            <div>
+                <h3>Statistikk og innsikt</h3>
+                <p>Når du klikker på "Statistikk" øverst på nettsiden, får du innsikt i utviklingen av andelen barn i alderen 1–2 år som går i barnehage på tvers av alle kommuner. Denne informasjonen gir en bedre forståelse av barnehagedekningen i hver enkelt kommune og kan være nyttig for å vurdere tilgjengelighet og behov i ulike områder.</p>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>© 2024 Kristiansand kommune</p>
+    </footer>
+</body>
+</html>

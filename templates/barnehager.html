@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oversikt over barnehager</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        /* Tabell-stiler */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #0056b3; /* Samme blåfarge som på commit- og søknader-sidene */
+            color: #fff; /* Hvit tekst */
+            font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Container for tabellen */
+        .table-container {
+            margin-bottom: 20px; /* Legg til mellomrom mellom tabellen og lenken */
+        }
+
+        /* Lenke tilbake til søknadsskjema */
+        a {
+            text-decoration: none;
+            color: #0056b3;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: #003366;
+        }
+
+        /* Generelle stiler for containeren */
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 90%;
+            margin: 20px auto;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Navigasjon -->
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('new_home') }}">Hjem</a></li>
+                <li><a href="{{ url_for('statistics') }}">Statistikk</a></li>
+                <li><a href="{{ url_for('applications') }}">Søknader</a></li>
+            </ul>
+        </nav>
+        
+        <h1>Oversikt over barnehager</h1>
+        
+        <!-- Tabell som viser barnehageinformasjon -->
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Barnehage Navn</th>
+                        <th>Antall Plasser</th>
+                        <th>Ledige Plasser</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for barnehage in barnehager %}
+                    <tr>
+                        <td>{{ barnehage['navn'] }}</td>
+                        <td>{{ barnehage['antall_plasser'] }}</td>
+                        <td>{{ barnehage['ledige_plasser'] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Tilbake til søknadsskjema -->
+        <a href="{{ url_for('index') }}">Tilbake til søknadsskjema</a>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2024 Kristiansand kommune</p>
+    </footer>
+</body>
+</html>

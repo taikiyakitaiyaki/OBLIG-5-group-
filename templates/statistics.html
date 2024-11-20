@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statistikk</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+</head>
+<body>
+  <div class="container">
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('new_home') }}">Hjem </a></li>
+                <li><a href="{{ url_for('barnehager') }}">Barnehager </a></li>
+                <li><a href="{{ url_for('applications') }}">Søknader </a></li>
+                <li><a href="{{ url_for('index') }}">Søknadskjema</a></li>
+            </ul>
+        </nav>
+        <h1>Statistikk</h1>
+        <form method="GET" action="{{ url_for('statistics') }}">
+            <label for="kommune">Velg Kommune:</label>
+            <select id="kommune" name="kommune">
+                {% for kommune in kommuner %}
+                    <option value="{{ kommune }}" {% if kommune == valgt_kommune %}selected{% endif %}>{{ kommune }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit">Vis statistikk</button>
+        </form>
+
+        <div>
+            {{ chart_html|safe }}
+        </div>
+    </div>
+    <footer>
+        <p>© 2024 Kristiansand kommune</p>
+    </footer>
+
+    <script>
+        $(document).ready(function() {
+            $('#kommune').select2();
+        });
+    </script>
+</body>
+</html>
