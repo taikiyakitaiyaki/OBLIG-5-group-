@@ -286,30 +286,3 @@ def commit():
         return "Ingen data funnet i Excel-filen."
     
     return render_template('commit.html', data=data)
-
-@app.route('/delete_all_applications', methods=['POST'])
-def delete_all_applications():
-    try:
-        # Slett alle søknader fra databasen
-        num_rows_deleted = db.session.query(Application).delete()
-        db.session.commit()
-        
-        # Slett dataene i Excel-filen
-        excel_path = r"C:\Users\mytri\Desktop\DELT OPP\applications.xlsx"
-        df = pd.DataFrame(columns=[
-            'email', 'parent1_name', 'parent2_name', 'parent1_address', 'parent2_address',
-            'parent1_phone', 'parent2_phone', 'parent1_id', 'parent2_id', 'child1_id',
-            'child1_age', 'child2_id', 'child2_age', 'priority', 'kindergarten_list',
-            'start_date', 'siblings', 'income', 'status'
-        ])
-        df.to_excel(excel_path, index=False)
-        
-        # Tilbakestill barnehagelistene
-        reset_kindergarten_lists()
-        
-        message = f"{num_rows_deleted} søknad(er) ble slettet."
-    except Exception as e:
-        db.session.rollback()
-        message = f"En feil oppstod: {str(e)}"
-    
-    return redirect(url_for('applications', message=message))
